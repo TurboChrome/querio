@@ -36,6 +36,8 @@
           ]"
           @click="$emit('input', entry.id)"
         >
+          <CopyButton :value="getFileContent(entry)" />
+          <FileExportButton :value="getFileContent(entry)" :name="entry.request.url"/>
           <div
             class="flex justify-center items-center h-5 w-5 rounded-sm uppercase font-semibold flex-shrink-0"
             :class="value === entry.id ? `text-white bg-${getColor(entry)}` : `bg-gray-200 dark:bg-gray-750 group-hover:bg-${getColor(entry)} text-gray-500 dark:text-gray-400 group-hover:text-white`"
@@ -149,6 +151,20 @@ export default {
   },
   methods: {
     ...mapMutations(['setSettings', 'setLastState']),
+    async getFileContent(entry) {
+      // const params = entry.request.params
+      // const body = entry.request.body
+      // const variables = this.entry.request.variables
+      const {data, errors} = await entry.response.getResponse()
+      return JSON.stringify({
+        request: entry.request,
+        response: {
+          ...entry.response,
+          data,
+          errors
+        }
+      }, null, 2)
+    },
     getColor(entry) {
       return this.typeColors[entry.type === 'GQL' ? entry.request.operationType.toUpperCase() : entry.type]
     },

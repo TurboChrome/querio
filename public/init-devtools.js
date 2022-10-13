@@ -1,5 +1,5 @@
 chrome.devtools.panels.create(
-  'Querio',
+  'NetworkPro',
   '/icons/16.png',
   'devtools.html'
 )

@@ -8,6 +8,7 @@
 import Button from '@/components/base/Button.vue'
 
 import CopyIcon from '@/assets/copy.svg'
+import {isPromise} from "@/utils";
 
 export default {
   components: {
@@ -30,8 +31,8 @@ export default {
     }
   },
   methods: {
-    onCopy() {
-      this.$copyText(this.value).then(() => {
+    async onCopy() {
+      this.$copyText(isPromise(this.value) ? await this.value : this.value).then(() => {
         this.copied = true
         setTimeout(() => this.copied = false, 1500)
       })
